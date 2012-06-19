@@ -109,11 +109,12 @@ Rabl.configure do |config|
   # config.include_json_root = true
   # config.include_msgpack_root = true
   # config.include_bson_root = true
-  # config.include_plist_root = true
+  # config.include_plist_root = false
   # config.include_xml_root  = false      
   # config.include_child_root = true
   # config.enable_json_callbacks = false
   # config.xml_options = { :dasherize  => true, :skip_types => false }
+  # config.plist_options = { :dasherize  => true, :skip_types => false }
   # config.view_paths = []
 end
 ```
@@ -153,6 +154,15 @@ and RABL will automatically start using that engine for encoding your JSON respo
 
 RABL supports configuration for MessagePack, BSON, and Plist. Check the
 [Format Configuration](https://github.com/nesquena/rabl/wiki/Configuring-Formats) page for more details.
+
+### Property List Format ###
+
+Rabl also has optional support for [Property List Format](http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man5/plist.5.html) using the [CFPropertyList](https://github.com/ckruse/CFPropertyList) gem.
+To enable, include the CFPropertyList gem in your project's Gemfile.
+
+```ruby
+# Gemfile
+gem 'CFPropertyList', '~> 2.0.17'
 
 ## Usage ##
 

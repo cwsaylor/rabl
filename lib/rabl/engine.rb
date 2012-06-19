@@ -74,11 +74,15 @@ module Rabl
     # Returns a plist representation of the data object
     # to_plist(:root => true)
     def to_plist(options={})
+      #include_root = Rabl.configuration.include_plist_root
+      #include_child_root = Rabl.configuration.include_child_root
+      #options = options.reverse_merge(:root => include_root, :child_root => include_child_root)
+      #result = defined?(@_collection_name) ? { @_collection_name => to_hash(options) } : to_hash(options)
+      #Rabl.configuration.plist_engine.dump(result)
       include_root = Rabl.configuration.include_plist_root
-      include_child_root = Rabl.configuration.include_child_root
-      options = options.reverse_merge(:root => include_root, :child_root => include_child_root)
-      result = defined?(@_collection_name) ? { @_collection_name => to_hash(options) } : to_hash(options)
-      Rabl.configuration.plist_engine.dump(result)
+      options = options.reverse_merge(:root => include_root, :child_root => include_root)
+      plist_options = Rabl.configuration.default_plist_options.merge(:root => data_name(@_data))
+      to_hash(options).to_plist(plist_options)
     end
 
     # Returns an xml representation of the data object

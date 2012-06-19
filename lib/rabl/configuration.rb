@@ -16,6 +16,12 @@ begin
 rescue LoadError
 end
 
+# We load the plist library if it is available.
+begin
+  require 'cfpropertylist'
+rescue LoadError
+end
+
 # Load MultiJSON
 require 'multi_json'
 
@@ -35,18 +41,20 @@ module Rabl
     attr_writer   :bson_engine
     attr_writer   :plist_engine
     attr_writer   :xml_options
+    attr_writer   :plist_options
     attr_accessor :cache_sources
     attr_accessor :cache_all_output
     attr_accessor :escape_all_output
     attr_accessor :view_paths
 
     DEFAULT_XML_OPTIONS = { :dasherize  => true, :skip_types => false }
+    DEFAULT_PLIST_OPTIONS = { :dasherize  => true, :skip_types => false }
 
     def initialize
       @include_json_root     = true
       @include_child_root    = true
       @include_msgpack_root  = true
-      @include_plist_root    = true
+      @include_plist_root    = false
       @include_xml_root      = false
       @include_bson_root     = true
       @enable_json_callbacks = false
@@ -61,6 +69,7 @@ module Rabl
       @cache_all_output      = false
       @escape_all_output     = false
       @view_paths            = []
+      @plist_options         = {}
     end
 
     # @param [Symbol, String, #encode] engine_name The name of a JSON engine,
@@ -106,6 +115,11 @@ module Rabl
     # Returns merged default and inputted xml options
     def default_xml_options
       @_default_xml_options ||= @xml_options.reverse_merge(DEFAULT_XML_OPTIONS)
+    end
+
+    # Returns merged default and inputted plist options
+    def default_plist_options
+      @_default_plist_options ||= @plist_options.reverse_merge(DEFAULT_PLIST_OPTIONS)
     end
 
     private
